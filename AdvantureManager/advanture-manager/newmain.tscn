@@ -1,0 +1,272 @@
+[gd_scene load_steps=12 format=3 uid="uid://cv2y02g0prwth"]
+
+[ext_resource type="Script" uid="uid://e4fh4r1vyujt" path="res://Main.gd" id="1_pe42c"]
+[ext_resource type="PackedScene" uid="uid://fdryu48phevr" path="res://Scenes/card.tscn" id="2_io7nm"]
+[ext_resource type="Texture2D" uid="uid://c7ikp15lh5ebe" path="res://Icons/Adma_Quests.png" id="2_mymi8"]
+[ext_resource type="Texture2D" uid="uid://c28hylwwo7cnf" path="res://Icons/Adma_Guild.png" id="3_io7nm"]
+[ext_resource type="PackedScene" uid="uid://dokwih0ghetgt" path="res://Scenes/PartyCard.tscn" id="3_umuc8"]
+[ext_resource type="Texture2D" uid="uid://c7ekiia0w3i08" path="res://Icons/Adma_Recruitment.png" id="4_umuc8"]
+[ext_resource type="Texture2D" uid="uid://dw03mr8cfhyrl" path="res://Icons/Adma_Store.png" id="5_vmj1s"]
+[ext_resource type="Texture2D" uid="uid://revpuskwpj62" path="res://Icons/Adma_Map.png" id="8_io7nm"]
+[ext_resource type="Texture2D" uid="uid://cnkydj83xm3is" path="res://Icons/Adma_GuildBackground.png" id="9_bq0w0"]
+[ext_resource type="Texture2D" uid="uid://c3vcne0ne3dq8" path="res://Icons/Adma_TavernBackground.png" id="10_th0si"]
+[ext_resource type="Texture2D" uid="uid://ba2wwf7tswqg7" path="res://Icons/Adma_MarketBackground.png" id="11_ud5xd"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pe42c")
+card_scene = ExtResource("2_io7nm")
+party_card_scene = ExtResource("3_umuc8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TopBarContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 5
+
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer/TopBarContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="GoldLabel" type="Label" parent="VBoxContainer/TopBarContainer/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Gold: 0"
+
+[node name="ReputationLabel" type="Label" parent="VBoxContainer/TopBarContainer/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Reputation: 0"
+
+[node name="TabBarContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+
+[node name="TabBar" type="HBoxContainer" parent="VBoxContainer/TabBarContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="QuestsTab" type="Button" parent="VBoxContainer/TabBarContainer/TabBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("2_mymi8")
+icon_alignment = 1
+expand_icon = true
+
+[node name="GuildTab" type="Button" parent="VBoxContainer/TabBarContainer/TabBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("3_io7nm")
+icon_alignment = 1
+expand_icon = true
+
+[node name="RecruitmentTab" type="Button" parent="VBoxContainer/TabBarContainer/TabBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("4_umuc8")
+icon_alignment = 1
+expand_icon = true
+
+[node name="EquipmentTab" type="Button" parent="VBoxContainer/TabBarContainer/TabBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("5_vmj1s")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ContantArea" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="QuestsPanel" type="ColorRect" parent="VBoxContainer/ContantArea"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.22670749, 0.22670749, 0.22670746, 1)
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ContantArea/QuestsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -15.0
+offset_right = 3.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_io7nm")
+expand_mode = 2
+
+[node name="GuildPanel" type="ColorRect" parent="VBoxContainer/ContantArea"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.35053885, 0.35116023, 1)
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ContantArea/GuildPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -15.0
+offset_right = 3.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_bq0w0")
+expand_mode = 2
+
+[node name="RecruitmentPanel" type="ColorRect" parent="VBoxContainer/ContantArea"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.99999994, 0.5504933, 0.28400055, 1)
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ContantArea/RecruitmentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -15.0
+offset_right = 3.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_th0si")
+expand_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel"]
+layout_mode = 0
+
+[node name="Recruitment" type="VBoxContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MainContent" type="HBoxContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RecruitmentPanel" type="VBoxContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment/MainContent"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment/MainContent/RecruitmentPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Available Advanturers"
+
+[node name="Refresh" type="Button" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment/MainContent/RecruitmentPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Refresh Pool
+"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment/MainContent/RecruitmentPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 500)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="RecruitmentList" type="VBoxContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment/MainContent/RecruitmentPanel/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="PartiesPanel" type="VBoxContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/PartiesPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Your Parties"
+
+[node name="PariesScrollContainer" type="ScrollContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/PartiesPanel"]
+custom_minimum_size = Vector2(400, 500)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="PartiesList" type="VBoxContainer" parent="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/PartiesPanel/PariesScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(510, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="EquipmentPanel" type="ColorRect" parent="VBoxContainer/ContantArea"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.93455565, 0.79030246, 1.1551381e-06, 1)
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ContantArea/EquipmentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -15.0
+offset_right = 3.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_ud5xd")
+expand_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/TabBarContainer/TabBar/RecruitmentTab" to="." method="_on_recruitment_tab_pressed"]
+[connection signal="pressed" from="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment/MainContent/RecruitmentPanel/Refresh" to="." method="refresh_recruitment_pool"]

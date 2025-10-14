@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://x6ub00lbmh5v"]
+
+[ext_resource type="Texture2D" uid="uid://c8134ne3l6vaf" path="res://Icons/icons8-schwert-100.png" id="1_tr0ob"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xn86w"]
+
+[node name="PartyMember" type="PanelContainer"]
+custom_minimum_size = Vector2(50, 50)
+offset_right = 100.0
+offset_bottom = 100.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xn86w")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer"]
+modulate = Color(1, 1, 1, 0.5647059)
+layout_mode = 2
+texture = ExtResource("1_tr0ob")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HeroName" type="Label" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Woogy"
+
+[node name="HeroClass" type="Label" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Warrior"
+
+[node name="HeroLevel" type="Label" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Level: 1"
