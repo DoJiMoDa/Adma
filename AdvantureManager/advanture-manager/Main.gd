@@ -18,7 +18,6 @@ var next_party_id: int = 1
 @export var party_card_scene: PackedScene
 
 # UI References - Top Bar
-#@onready var gold_label = %GoldLabel
 @onready var gold_label: Label = %GoldLabel
 @onready var reputation_label = %ReputationLabel
 
@@ -44,10 +43,7 @@ func _ready():
 	randomize()
 	reputation = randi() % 501  # 0-500
 	
-	# Create first party
-	create_new_party("Party Alpha")
 	update_ui()
-
 	
 	# Set starting tab (Quests)
 	show_tab("quests")
@@ -116,18 +112,17 @@ func get_available_party() -> Dictionary:
 		if party.members.size() < max_party_size:
 			return party
 	
-	# If all parties are full, create a new one
-	var new_party_name = "Party %s" % get_party_letter(parties.size())
-	return create_new_party(new_party_name)
-
-func get_party_letter(index: int) -> String:
-	var letters = ["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta"]
-	if index < letters.size():
-		return letters[index]
-	return str(index + 1)
+	# If all parties are full, create a new one with placeholder name
+	var new_party = create_new_party("New Party")
+	return new_party
 
 func add_adventurer_to_party(adventurer: Dictionary):
 	var party = get_available_party()
+	
+	# If this is the first member, name the party after them
+	if party.members.size() == 0:
+		party.name = "Team %s" % adventurer.name
+	
 	party.members.append(adventurer)
 	print("Added %s to %s (now %d/%d members)" % [adventurer.name, party.name, party.members.size(), max_party_size])
 	update_parties_display()
@@ -303,21 +298,35 @@ func update_parties_display():
 				var memberscene = load("res://party_member.tscn")
 				var membercontainer = memberscene.instantiate()
 				member_container.add_child(membercontainer)
+				
+				# Set member data
 				membercontainer.get_node("%HeroName").text = member.name
 				membercontainer.get_node("%HeroClass").text = member.class
 				membercontainer.get_node("%HeroLevel").text = "Lvl %d" % member.level
 				
+				# Set class icon
+				var class_icon = get_class_icon(member.class)
+				if class_icon:
+					membercontainer.get_node("CenterContainer/TextureRect").texture = class_icon
+				
 		else:
 			# Show empty slots
 			for i in range(max_party_size):
-				var empty_slot = Label.new()
-				empty_slot.text = "Empty"
-				empty_slot.custom_minimum_size = Vector2(80, 0)
-				empty_slot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-				empty_slot.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-				empty_slot.modulate = Color(0.5, 0.5, 0.5)
-				member_container.add_child(empty_slot)
+				var memberscene = load("res://party_member.tscn")
+				var membercontainer = memberscene.instantiate()
+				member_container.add_child(membercontainer)
+				
+				membercontainer.get_node("%HeroName").text = "Empty"
+				membercontainer.get_node("%HeroClass").text = ""
+				membercontainer.get_node("%HeroLevel").text = ""
+				membercontainer.modulate = Color(0.5, 0.5, 0.5, 0.5)
 
+func get_class_icon(HeroClass_name: String) -> Texture2D:
+	# Map class names to icon paths
+	var icon_path = AdventurerData.CLASS_ICONS.get(HeroClass_name, "")
+	if icon_path != "" and ResourceLoader.exists(icon_path):
+		return load(icon_path)
+	return null
 
 func _on_button_pressed() -> void:
 	update_ui()

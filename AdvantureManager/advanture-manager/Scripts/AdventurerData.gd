@@ -55,3 +55,18 @@ const CLASS_STAT_BONUSES = {
 	"Cleric": {"WIS": 2, "CON": 1},
 	"Monk": {"DEX": 1, "WIS": 2}
 }
+
+# Class icons - Update these paths to match your icon locations
+const CLASS_ICONS = {
+	"Warrior": "res://Icons/ClassIcons/Adma_Warrior.png",
+	"Ranger": "res://Icons/ClassIcons/Adma_Ranger.png",
+	"Bard": "res://Icons/ClassIcons/Adma_bard.png",
+	"Mage": "res://Icons/ClassIcons/Adma_Mage.png",
+	"Thief": "res://Icons/ClassIcons/Adma_Thief.png",
+	"Assassin": "res://Icons/ClassIcons/Adma_Assassin.png",
+	"Warlock": "res://Icons/ClassIcons/Adma_Warlock.png",
+	"Rogue": "res://Icons/ClassIcons/Adma_Rogue.png",
+	"Paladin": "res://Icons/ClassIcons/Adma_Paladin.png",
+	"Cleric": "res://Icons/ClassIcons/Adma_Cleric.png",
+	"Monk": "res://Icons/ClassIcons/Adma_Monk.png"
+}
