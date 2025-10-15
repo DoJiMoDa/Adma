@@ -4,6 +4,7 @@ extends Control
 # Player resources
 var gold: int = 1000
 var reputation: int = 0  # 0-500 scale
+var player_inventory: Array = []  # Items owned by player
 
 # Recruitment pool
 var available_adventurers: Array = []
@@ -37,6 +38,20 @@ var next_party_id: int = 1
 @onready var recruitment_list = %RecruitmentList
 @onready var refresh_button = %Refresh
 @onready var parties_list = %PartiesList
+
+# UI References - Equipment Panel
+@onready var shop_items_list = %ShopItemsList
+@onready var refresh_shop_button = %RefreshShopButton
+@onready var adventurer_selector = %AdvanturerSelector
+@onready var equipment_display = %EquipmentDisplay
+@onready var stats_display = %StatsDisplay
+@onready var main_hand_item = %MainHandItem
+@onready var off_hand_item = %OffHandItem
+@onready var helmet_item = %HelmetItem
+@onready var armor_item = %ArmorItem
+@onready var trinket1_item = %Trinket1Item
+@onready var trinket2_item = %Trinket2Item
+
 
 func _ready():
 	# Randomize reputation at start
@@ -161,7 +176,8 @@ func generate_adventurer_with_bias(player_alignment: String) -> Dictionary:
 		"level": 1,
 		"stats": generate_stats(adventurer_class),
 		"alignment": AdventurerData.CLASS_ALIGNMENTS[adventurer_class],
-		"cost": calculate_hire_cost(adventurer_class)
+		"cost": calculate_hire_cost(adventurer_class),
+		"equipment": AdventurerData.create_empty_equipment()
 	}
 
 func get_random_class_with_bias(player_alignment: String) -> String:
@@ -331,3 +347,186 @@ func get_class_icon(HeroClass_name: String) -> Texture2D:
 func _on_button_pressed() -> void:
 	update_ui()
 	update_parties_display()
+
+# Add to UI References section (after the existing @onready vars)
+
+# Add to scene references
+@export var item_card_scene: PackedScene
+
+# Add these variables at the top with other variables
+var shop_items: Array = []  # Current shop offerings
+var selected_adventurer: Dictionary = {}
+
+# ===== EQUIPMENT SHOP SYSTEM =====
+
+func refresh_shop():
+	# Clear existing items
+	for child in shop_items_list.get_children():
+		child.queue_free()
+	
+	shop_items.clear()
+	
+	# Generate 5-10 random items for the shop
+	var item_count = randi() % 6 + 5  # 5 to 10 items
+	var item_names = AdventurerData.SAMPLE_ITEMS.keys()
+	
+	for i in range(item_count):
+		var random_item_name = item_names[randi() % item_names.size()]
+		var item_data = AdventurerData.SAMPLE_ITEMS[random_item_name].duplicate()
+		item_data["name"] = random_item_name
+		shop_items.append(item_data)
+		create_shop_item_card(item_data)
+
+func create_shop_item_card(item: Dictionary):
+	var card = item_card_scene.instantiate()
+	shop_items_list.add_child(card)
+	
+	# Set item data
+	card.item_name_label.text = item.name
+	
+	var rarity_name = AdventurerData.get_rarity_name(item.rarity)
+	var rarity_color = AdventurerData.get_rarity_color(item.rarity)
+	card.item_rarity_label.text = rarity_name
+	card.item_rarity_label.modulate = rarity_color
+	
+	# Format stats
+	var stats_text = ""
+	for stat in item.stats:
+		if stats_text != "":
+			stats_text += ", "
+		stats_text += "%s +%d" % [stat, item.stats[stat]]
+	card.item_stats_label.text = stats_text
+	
+	card.item_cost_label.text = "%d gold" % item.cost
+	
+	# Connect buy button
+	card.buy_button.pressed.connect(_on_buy_item.bind(item, card))
+
+func _on_buy_item(item: Dictionary, card: Control):
+	if gold >= item.cost:
+		gold -= item.cost
+		player_inventory.append(item.duplicate())
+		var carddupe = card.duplicate()
+		%PlayerItems.add_child(carddupe)
+		#carddupe.buy_button.pressed.disconnect(_on_buy_item)
+		carddupe.buy_button.text = "Equip"
+		carddupe.buy_button.pressed.connect(_on_equip_item.bind(item,carddupe))
+			
+		shop_items.erase(item)
+		card.queue_free()
+		update_ui()
+		print("Purchased %s for %d gold!" % [item.name, item.cost])
+	else:
+		print("Not enough gold!")
+
+func _on_equip_item(item,card):
+	var partyindex = floor(%AdvanturerSelector.selected/5)
+	var partymember= %AdvanturerSelector.selected %5
+	var member = parties[partyindex]["members"][partymember]
+	AdventurerData.equip_item(member,item)
+	update_equipment_display()
+	player_inventory.erase(item)
+	card.queue_free()
+
+# ===== ADVENTURER EQUIPMENT MANAGEMENT =====
+
+func update_adventurer_selector():
+	adventurer_selector.clear()
+	
+	# Add all adventurers from all parties
+	var index = 0
+	for party in parties:
+		for member in party.members:
+			var display_text = "%s - %s (Lvl %d)" % [member.name, member.class, member.level]
+			adventurer_selector.add_item(display_text, index)
+			index += 1
+			
+	adventurer_selector.select(0)
+
+func _on_adventurer_selected(index: int):
+	# Find the adventurer by index
+	var current_index = 0
+	for party in parties:
+		for member in party.members:
+			if current_index == index:
+				selected_adventurer = member
+				update_equipment_display()
+				return
+			current_index += 1
+
+func update_equipment_display():
+	if selected_adventurer.is_empty():
+		return
+	
+	# Update equipment slots
+	main_hand_item.text = get_item_display_name(selected_adventurer.equipment.main_hand)
+	off_hand_item.text = get_item_display_name(selected_adventurer.equipment.off_hand)
+	helmet_item.text = get_item_display_name(selected_adventurer.equipment.helmet)
+	armor_item.text = get_item_display_name(selected_adventurer.equipment.armor)
+	trinket1_item.text = get_item_display_name(selected_adventurer.equipment.trinket_1)
+	trinket2_item.text = get_item_display_name(selected_adventurer.equipment.trinket_2)
+	
+	# Update stats display
+	var total_stats = get_adventurer_total_stats(selected_adventurer)
+	var stats_text = "Total Stats:\n"
+	for stat in ["STR", "DEX", "CON", "INT", "WIS", "CHA"]:
+		if total_stats.has(stat):
+			var base_stat = selected_adventurer.stats[stat]
+			var bonus = total_stats[stat] - base_stat
+			if bonus > 0:
+				stats_text += "%s: %d (+%d)\n" % [stat, total_stats[stat], bonus]
+			else:
+				stats_text += "%s: %d\n" % [stat, total_stats[stat]]
+	
+	stats_display.text = stats_text
+
+func get_item_display_name(item) -> String:
+	if item == null:
+		return "(Empty)"
+	return item.name if item.has("name") else "(Unknown)"
+
+func get_adventurer_total_stats(selected_adventurer):
+	var equipmentstats = {}
+	print(selected_adventurer)
+	for stat in (selected_adventurer["stats"]):
+		if stat not in equipmentstats:
+			equipmentstats[stat]=0 
+		equipmentstats[stat]+= selected_adventurer["stats"][stat]
+	
+	calc_stats_for_equipmentslot("main_hand",equipmentstats)
+	calc_stats_for_equipmentslot("off_hand",equipmentstats)
+	calc_stats_for_equipmentslot("helmet",equipmentstats)
+	calc_stats_for_equipmentslot("armor",equipmentstats)
+	calc_stats_for_equipmentslot("trinket_1",equipmentstats)
+	calc_stats_for_equipmentslot("trinket_2",equipmentstats)
+	return equipmentstats
+
+func calc_stats_for_equipmentslot(slot, equipmentstats):
+	print(selected_adventurer["equipment"][slot])
+	
+	if selected_adventurer["equipment"][slot]==null:
+		return
+
+	for stat in (selected_adventurer["equipment"][slot]["stats"]):
+		if stat not in equipmentstats:
+			equipmentstats[stat]=0 
+		equipmentstats[stat]+= selected_adventurer["equipment"][slot]["stats"][stat]
+	return equipmentstats
+	
+func _on_refresh_shop_button_pressed() -> void:
+	update_selected_Adventurer(adventurer_selector.selected)
+	update_adventurer_selector()
+	update_equipment_display()
+	refresh_shop()
+	pass # Replace with function body.
+
+func _on_advanturer_selector_item_selected(index: int) -> void:
+	update_selected_Adventurer(index)
+	
+func update_selected_Adventurer(index):
+	if index == -1:
+		return
+	var partyindex = floor(index/5) 
+	var memberindex = index%5
+	selected_adventurer=parties[partyindex]["members"][memberindex]
+	update_equipment_display()

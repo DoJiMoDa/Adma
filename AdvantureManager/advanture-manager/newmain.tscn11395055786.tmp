@@ -436,9 +436,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 100)
 layout_mode = 2
 
-[node name="ItemCost" type="Label" parent="VBoxContainer/ContantArea/EquipmentPanel/ColorRect/MarginContainer/HBoxContainer/PlayerInventory"]
-layout_mode = 2
-
 [connection signal="pressed" from="VBoxContainer/TabBarContainer/TabBar/RecruitmentTab" to="." method="_on_recruitment_tab_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabBarContainer/TabBar/EquipmentTab" to="." method="_on_equipment_tab_pressed"]
 [connection signal="pressed" from="VBoxContainer/ContantArea/RecruitmentPanel/HBoxContainer/Recruitment/MainContent/RecruitmentPanel/Refresh" to="." method="refresh_recruitment_pool"]
