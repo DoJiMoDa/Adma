@@ -1,0 +1,93 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkrwyynwvgrul"]
+
+[ext_resource type="Script" uid="uid://cfd3lcoxqoky6" path="res://Scripts/recruitment.gd" id="1_77uvf"]
+[ext_resource type="Texture2D" uid="uid://c3vcne0ne3dq8" path="res://Icons/Adma_TavernBackground.png" id="1_p6iy1"]
+[ext_resource type="PackedScene" uid="uid://fdryu48phevr" path="res://Scenes/card.tscn" id="2_jyp4a"]
+[ext_resource type="PackedScene" uid="uid://dokwih0ghetgt" path="res://Scenes/PartyCard.tscn" id="3_10hmc"]
+
+[node name="RecruitmentPanel" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.99999994, 0.5504933, 0.28400055, 1)
+script = ExtResource("1_77uvf")
+card_scene = ExtResource("2_jyp4a")
+party_card_scene = ExtResource("3_10hmc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -15.0
+offset_right = 3.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_p6iy1")
+expand_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+
+[node name="Recruitment" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MainContent" type="HBoxContainer" parent="HBoxContainer/Recruitment"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RecruitmentPanel" type="VBoxContainer" parent="HBoxContainer/Recruitment/MainContent"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="HBoxContainer/Recruitment/MainContent/RecruitmentPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Available Advanturers"
+
+[node name="Refresh" type="Button" parent="HBoxContainer/Recruitment/MainContent/RecruitmentPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Refresh Pool
+"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Recruitment/MainContent/RecruitmentPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 500)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="RecruitmentList" type="VBoxContainer" parent="HBoxContainer/Recruitment/MainContent/RecruitmentPanel/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="PartiesPanel" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="HBoxContainer/PartiesPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Your Parties"
+
+[node name="PariesScrollContainer" type="ScrollContainer" parent="HBoxContainer/PartiesPanel"]
+custom_minimum_size = Vector2(400, 500)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="PartiesList" type="VBoxContainer" parent="HBoxContainer/PartiesPanel/PariesScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(510, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[connection signal="pressed" from="HBoxContainer/Recruitment/MainContent/RecruitmentPanel/Refresh" to="." method="_on_refresh_pressed"]
