@@ -21,6 +21,7 @@ AdventurerData="*res://Scripts/AdventurerData.gd"
 GameManager="*res://Scripts/GameManager.gd"
 RecruitmentManager="*res://Scripts/RecruitmentManager.gd"
 PartyManager="*res://Scripts/PartyManager.gd"
+EquipmentManager="*res://Scripts/EquipmentManager.gd"
 
 [rendering]
 

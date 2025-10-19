@@ -267,6 +267,8 @@ static func get_rarity_name(rarity: int) -> String:
 	return "Unknown"
 	
 static func equip_item(member,item):
+	if not "equipment" in member:
+		member.equipment=create_empty_equipment()
 	match item["type"]: 
 		EquipmentSlot.MAIN_HAND:
 			member.equipment["main_hand"]=item

@@ -6,8 +6,9 @@ func addtoparty(adventurer):
 		members.append(adventurer)
 
 func getadventurer(index):
-	return members.get(index)
-	
+	if index<len(members):
+		return members.get(index)
+
 func IsFull ():
 	return len(members)>=5
 	

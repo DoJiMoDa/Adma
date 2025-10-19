@@ -1,0 +1,196 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmbq2nopvbt0t"]
+
+[ext_resource type="Texture2D" uid="uid://ba2wwf7tswqg7" path="res://Icons/Adma_MarketBackground.png" id="1_80odu"]
+[ext_resource type="Script" uid="uid://s2c7aamhrq7n" path="res://equipment_panel.gd" id="2_o64aa"]
+[ext_resource type="PackedScene" uid="uid://ovsnhhvn8sk6" path="res://Scenes/item_card.tscn" id="2_tu7fo"]
+
+[node name="EquipmentPanel" type="ColorRect"]
+color = Color(0.93455565, 0.79030246, 1.1551381e-06, 1)
+script = ExtResource("2_o64aa")
+itemcard = ExtResource("2_tu7fo")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -15.0
+offset_right = 3.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_80odu")
+expand_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 1, 1, 0)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+offset_right = 244.0
+offset_bottom = 235.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+
+[node name="ShopPanel" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ShopTitle" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/ShopPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Market"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer/HBoxContainer/ShopPanel"]
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+
+[node name="ShopItemsList" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/ShopPanel/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="RefreshShopButton" type="Button" parent="ColorRect/MarginContainer/HBoxContainer/ShopPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Refresh"
+
+[node name="InventoryPanel" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="InventoryTitle" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Your Advantureres
+"
+
+[node name="AdvanturerSelector" type="OptionButton" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="EquipmentDisplay" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MainHand" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SlotLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/MainHand"]
+layout_mode = 2
+text = "Main Hand"
+
+[node name="MainHandItem" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/MainHand"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ItemName"
+
+[node name="OffHand" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SlotLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/OffHand"]
+layout_mode = 2
+text = "Off Hand"
+
+[node name="OffHandItem" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/OffHand"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ItemName"
+
+[node name="Helmet" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SlotLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/Helmet"]
+layout_mode = 2
+text = "Helmet"
+
+[node name="HelmetItem" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/Helmet"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ItemName"
+
+[node name="ArmorSlot" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SlotLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/ArmorSlot"]
+layout_mode = 2
+text = "Armor"
+
+[node name="ArmorItem" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/ArmorSlot"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ItemName"
+
+[node name="Trinket1" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SlotLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/Trinket1"]
+layout_mode = 2
+text = "Trinket 1"
+
+[node name="Trinket1Item" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/Trinket1"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ItemName"
+
+[node name="Trinket2" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SlotLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/Trinket2"]
+layout_mode = 2
+text = "Trinket 2"
+
+[node name="Trinket2Item" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/EquipmentDisplay/Trinket2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ItemName"
+
+[node name="StatsDisplay" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel"]
+layout_mode = 2
+
+[node name="StatsDisplay" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/InventoryPanel/StatsDisplay"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current Stats"
+
+[node name="PlayerInventory" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer/HBoxContainer/PlayerInventory"]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayerItems" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/PlayerInventory/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+
+[node name="ItemCost" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/PlayerInventory"]
+layout_mode = 2
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/HBoxContainer/ShopPanel/RefreshShopButton" to="." method="refresh_shop"]

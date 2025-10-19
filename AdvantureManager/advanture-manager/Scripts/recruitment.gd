@@ -6,9 +6,9 @@ extends ColorRect
 @export var card_scene: PackedScene
 @export var party_card_scene: PackedScene
 # UI References
-@onready var refresh_button: Button = %Refresh
 @onready var recruitment_list: VBoxContainer = %RecruitmentList
 @onready var parties_list: VBoxContainer = %PartiesList
+@onready var refresh_button: Button = %Refresh
 
 func _ready():
 	

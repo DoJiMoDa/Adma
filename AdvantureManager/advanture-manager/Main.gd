@@ -23,9 +23,6 @@ var equipment_manager: Node
 @onready var equipment_panel = %EquipmentPanel
 
 func _ready():
-	# Initialize managers
-	setup_managers()
-	
 	# Connect to GameManager signals for top bar
 	GameManager.gold_changed.connect(_on_gold_changed)
 	GameManager.reputation_changed.connect(_on_reputation_changed)
@@ -42,20 +39,6 @@ func _ready():
 	# Set starting tab
 	show_tab("quests")
 	quests_tab.button_pressed = true
-
-func setup_managers():
-
-	# Create PartyManager
-	party_manager = Node.new()
-	party_manager.set_script(load("res://Scripts/PartyManager.gd"))
-	party_manager.name = "PartyManager"
-	add_child(party_manager)
-	
-	# Create EquipmentManager
-	equipment_manager = Node.new()
-	equipment_manager.set_script(load("res://Scripts/EquipmentManager.gd"))
-	equipment_manager.name = "EquipmentManager"
-	add_child(equipment_manager)
 
 # ===== TOP BAR UI =====
 
@@ -88,9 +71,6 @@ func show_tab(tab_name: String):
 			recruitment_panel.visible = true
 		"equipment":
 			equipment_panel.visible = true
-			# Notify equipment panel it's visible
-			if equipment_panel.has_method("_on_visibility_changed"):
-				equipment_panel._on_visibility_changed()
 
 func _on_quests_tab_pressed():
 	show_tab("quests")
@@ -102,6 +82,7 @@ func _on_recruitment_tab_pressed():
 	show_tab("recruitment")
 
 func _on_equipment_tab_pressed():
+	equipment_panel.refresh()
 	show_tab("equipment")
 
 func _on_refresh_pressed() -> void:
